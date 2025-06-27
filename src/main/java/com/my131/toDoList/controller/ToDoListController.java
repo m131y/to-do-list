@@ -26,11 +26,28 @@ public class ToDoListController {
         return "redirect:/";
     }
 
+    @PostMapping("/todos/toggle")
+    public String toggleComplete(@RequestParam("taskId") int taskId) {
+        toDoService.toggleTaskCompletion(taskId);
+
+        return "redirect:/";
+    }
+
+    @PostMapping("/todos/update")
+    public String updateTask(@RequestParam("taskId") int taskId,
+                             @RequestParam("newDescription") String newDescription) {
+        toDoService.toggleTaskCompletion(taskId);
+        toDoService.UpdateTask(taskId, newDescription);
+
+        return "redirect:/";
+    }
+
     @PostMapping("/todos/delete")
     public String deleteTask(@RequestParam("taskId") int taskId) {
-        System.out.println("delete");
         toDoService.deleteTask(taskId);
 
         return "redirect:/";
     }
+
+
 }

@@ -16,11 +16,23 @@
     <div class="todo-list">
         <ul>
             <li th:each="task : ${todos}" >
+                <form th:action="@{/todos/toggle}" method="post" style="display:inline;">
+                    <input type="hidden" name="taskId" th:value="${task.id}"/>
+                    <input type="checkbox" onclick="this.form.submit()" th:checked="${task.completed}"/>
+                    <!--input으로 이 form을 submit할 수 있게 해줌-->
+                </form>
+
                 <span th:text="${task.description}"></span>
 
                 <form th:action="@{/todos/delete}" method="post" style="display:inline;">
                     <input type="hidden" name="taskId" th:value="${task.id}"/>
                     <button style="submit">Delete</button>
+                </form>
+
+                <form th:action="@{/todos/update}" method="post" style="display:inline;">
+                    <input type="hidden" name="taskId" th:value="${task.id}"/>
+                    <input type="text" name="newDescription" placeholder="Edit task" required/>
+                    <button style="submit">Update</button>
                 </form>
             </li>
         </ul>

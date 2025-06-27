@@ -17,13 +17,29 @@ public class ToDoService {
 
     public void addTask(String description) {
         tasks.add(new Task(idCounter.getAndIncrement(), description));
-
-//        for(Task task:tasks) {
-//            System.out.println(task.getId() + task.getDescription() + task.isCompleted());
-//        }
     }
+    public void toggleTaskCompletion(int taskId) {
+        for (Task task:tasks) {
+            if (task.getId() == taskId) {
+                task.setCompleted(!task.isCompleted());
+
+                break;
+            }
+        }
+    }
+
+    public void UpdateTask(int taskId, String newDescription) {
+        for (Task task:tasks) {
+            if (task.getId() == taskId) {
+                task.setDescription(newDescription);
+
+                break;
+            }
+        }
+    }
+
+
     public void deleteTask(int taskId) {
-        System.out.println("delete task");
         tasks.removeIf(t -> t.getId() == taskId);
     }
 
