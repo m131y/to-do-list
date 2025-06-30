@@ -28,16 +28,24 @@
                 </div>
                 <span th:text="${task.taskDate}"></span>
                 <div class="task-right">
-                    <form th:action="@{/todos/update}" method="post" style="display:inline;">
-                        <input type="hidden" name="taskId" th:value="${task.id}"/>
-                        <input type="text" name="newDescription" placeholder="Edit task" required/>
-                        <button style="submit">Update</button>
-                    </form>
+                    <div class="kebab-menu-wrapper">
+                        <!-- 케밥 버튼 -->
+                        <button class="kebab-btn" onclick="toggleMenu(this)">⋮</button>
 
-                    <form th:action="@{/todos/delete}" method="post" style="display:inline;">
-                        <input type="hidden" name="taskId" th:value="${task.id}"/>
-                        <button style="submit">Delete</button>
-                    </form>
+                        <!-- 팝업 메뉴 -->
+                        <div class="kebab-menu hidden">
+                            <form th:action="@{/todos/update}" method="post">
+                                <input type="hidden" name="taskId" th:value="${task.id}"/>
+                                <input type="text" name="newDescription" placeholder="Edit task" required/>
+                                <button type="submit">Edit</button>
+                            </form>
+
+                            <form th:action="@{/todos/delete}" method="post">
+                                <input type="hidden" name="taskId" th:value="${task.id}"/>
+                                <button type="submit">Delete</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </li>
             <span>
@@ -47,5 +55,24 @@
     </div>
 
 </div>
+
+<script>
+    function toggleMenu(button) {
+        const menu = button.nextElementSibling;
+        const allMenus = document.querySelectorAll('.kebab-menu');
+        allMenus.forEach(m => {
+            if (m !== menu) m.classList.add('hidden');
+        });
+        menu.classList.toggle('hidden');
+    }
+
+    // 바깥 클릭 시 메뉴 닫기
+    document.addEventListener('click', function(event) {
+        if (!event.target.closest('.kebab-menu-wrapper')) {
+            document.querySelectorAll('.kebab-menu').forEach(menu => menu.classList.add('hidden'));
+        }
+    });
+</script>
+
 </body>
 </html>

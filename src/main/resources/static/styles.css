@@ -124,3 +124,59 @@ input[type="checkbox"] {
     display: inline-block;
     margin-left: 10px;
 }
+
+
+.kebab-menu-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.kebab-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.kebab-menu {
+    display: flex;
+    flex-direction: row; /* 👈 가로로 */
+    align-items: center;
+    gap: 10px; /* 요소 사이 간격 */
+    padding: 10px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    z-index: 100;
+    position: absolute;
+    top: 30px;
+    right: 0;
+    white-space: nowrap;
+}
+
+.kebab-menu form {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin: 0;
+}
+
+.kebab-menu form input[type="text"] {
+    height: 30px;
+    padding: 4px 8px;
+}
+
+.kebab-menu form button {
+    height: 34px;
+    padding: 5px 10px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+
+/* 숨김 제어 클래스 */
+.hidden {
+    display: none;
+}
