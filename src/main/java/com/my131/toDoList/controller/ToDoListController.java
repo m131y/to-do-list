@@ -24,7 +24,6 @@ public class ToDoListController {
 
     @PostMapping("/todos")
     public String addTask(@RequestParam("task") String task, LocalDate taskDate) {  //html에서 post로 task인 값 받아서 String task에 저장
-        System.out.println(taskDate);
         toDoService.addTask(task, taskDate);
 
         return "redirect:/";
