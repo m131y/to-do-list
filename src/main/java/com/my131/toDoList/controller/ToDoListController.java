@@ -2,11 +2,14 @@ package com.my131.toDoList.controller;
 
 import com.my131.toDoList.service.ToDoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.time.LocalDate;
 
 @Controller
 public class ToDoListController {
@@ -20,8 +23,9 @@ public class ToDoListController {
     }
 
     @PostMapping("/todos")
-    public String addTask(@RequestParam("task") String task) {  //html에서 post로 task인 값 받아서 String task에 저장
-        toDoService.addTask(task);
+    public String addTask(@RequestParam("task") String task, LocalDate taskDate) {  //html에서 post로 task인 값 받아서 String task에 저장
+        System.out.println(taskDate);
+        toDoService.addTask(task, taskDate);
 
         return "redirect:/";
     }

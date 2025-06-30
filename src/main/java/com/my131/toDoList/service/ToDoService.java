@@ -2,6 +2,7 @@ package com.my131.toDoList.service;
 
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -15,8 +16,8 @@ public class ToDoService {
         return tasks;
     }
 
-    public void addTask(String description) {
-        tasks.add(new Task(idCounter.getAndIncrement(), description));
+    public void addTask(String description, LocalDate taskDate) {
+        tasks.add(new Task(idCounter.getAndIncrement(), description, taskDate));
     }
     public void toggleTaskCompletion(int taskId) {
         for (Task task:tasks) {
@@ -47,14 +48,17 @@ public class ToDoService {
         private final int id;
         private String description;
         private boolean completed = false;
+        private LocalDate taskDate;
 
-        public Task(int id, String description) {
+        public Task(int id, String description, LocalDate taskDate) {
             this.id = id;
             this.description = description;
+            this.taskDate = taskDate;
         }
 
         public int getId() { return id; }
         public String getDescription() { return description; }
+        public LocalDate getTaskDate() { return taskDate; }
         public boolean isCompleted() { return completed; }
 
         public void setDescription(String description) {
@@ -62,6 +66,9 @@ public class ToDoService {
         }
         public void setCompleted(boolean completed) {
             this.completed = completed;
+        }
+        public void setTaskDate(LocalDate taskDate) {
+            this.taskDate = taskDate;
         }
     }
 }

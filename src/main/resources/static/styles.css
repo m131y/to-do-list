@@ -66,6 +66,7 @@ button:hover {
     list-style-type: none;
     padding-left: 0;
     display: flex;
+    flex-direction: column; /* 항목들을 세로로 정렬 */
 }
 
 .todo-list li {
@@ -105,4 +106,21 @@ input[type="checkbox"] {
     accent-color: #5cb85c;
     cursor: pointer;
     margin-right: 5px;
+}
+
+.task-left {
+    display: flex;
+    align-items: center;
+}
+
+.task-right {
+    margin-left: auto; /* 왼쪽 여백 최대 = 오른쪽 정렬 */
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.task-right form {
+    display: inline-block;
+    margin-left: 10px;
 }
