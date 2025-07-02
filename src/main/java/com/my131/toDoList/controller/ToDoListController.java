@@ -22,18 +22,29 @@ public class ToDoListController {
         return "todolist";
     }
 
+    @GetMapping("/todos")
+    public String listTodos(@RequestParam(defaultValue = "created") String sort, Model model) {
+        System.out.println("정렬");
+        model.addAttribute("todos", toDoService.getAllSorted(sort));
+        model.addAttribute("sort", sort);  // 선택된 상태 유지용
+        return "todolist";
+    }
+
     @PostMapping("/todos")
-    public String addTask(@RequestParam("task") String task, LocalDate taskDate) {  //html에서 post로 task인 값 받아서 String task에 저장
-        toDoService.addTask(task, taskDate);
+    public String addTask(@RequestParam("task") String task, String color, LocalDate taskStartDate, LocalDate taskEndDate) {  //html에서 post로 task인 값 받아서 String task에 저장
+        System.out.println(task+color+taskStartDate+taskEndDate);
+        toDoService.addTask(task, color, taskStartDate, taskEndDate);
+
 
         return "redirect:/";
     }
 
     @PostMapping("/todos/toggle")
-    public String toggleComplete(@RequestParam("taskId") int taskId) {
+    public String toggleComplete(@RequestParam("taskId") int taskId,
+                                 @RequestParam("sort") String sort) {
         toDoService.toggleTaskCompletion(taskId);
 
-        return "redirect:/";
+        return "redirect:/todos?sort=" + sort;
     }
 
     @PostMapping("/todos/update")

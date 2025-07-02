@@ -8,25 +8,73 @@
 <body>
 <div class="container">
     <h1>To Do List</h1>
-    <form th:action="@{/todos}" method="post">
-        <input type="text" name="task" placeholder="Enter a new task" required />
-        <button type="submit">투두 추가</button>
-        <input type="date" name="taskDate" placeholder="Date" style="margin:10px;" required/>
+    <form th:action="@{/todos}" method="post" class="todo-form" onsubmit="return validateForm()">
+        <div class="top-row">
+            <div class="color-picker" style="margin-bottom: 10px;">
+                <label>
+                    <input type="radio" name="color" value="#FF7171" />
+                    <span class="color-box" style="background-color: #FF7171;"></span>
+                </label>
+                <label>
+                    <input type="radio" name="color" value="#6f99de" />
+                    <span class="color-box" style="background-color: #6f99de;"></span>
+                </label>
+                <label>
+                    <input type="radio" name="color" value="#0caf6377" />
+                    <span class="color-box" style="background-color: #0caf6377;"></span>
+                </label>
+                <label>
+                    <input type="radio" name="color" value="#F5D971" />
+                    <span class="color-box" style="background-color: #F5D971;"></span>
+                </label>
+            </div>
+            <div class="date-inputs">
+                <input type="date" name="taskStartDate" placeholder="StartDate" required/>
+                <input type="date" name="taskEndDate" placeholder="StartDate" required/>
+            </div>
+        </div>
+        <div class="bottom-row">
+            <input type="text" name="task" placeholder="Enter a new task" required />
+            <button type="submit">투두 추가</button>
+        </div>
+    </form>
+
+    <form method="get" action="/todos">
+        <select name="sort" onchange="this.form.submit()">
+            <option value="created" th:selected="${sort == 'created'}">등록순</option>
+            <option value="start" th:selected="${sort == 'start'}">시작일순</option>
+            <option value="color" th:selected="${sort == 'color'}">색상별</option>
+        </select>
     </form>
 
     <div class="todo-list">
         <ul>
             <li th:each="task : ${todos}" >
                 <div class="task-left">
-                    <form th:action="@{/todos/toggle}" method="post" style="display:inline;">
-                        <input type="hidden" name="taskId" th:value="${task.id}"/>
-                        <input type="checkbox" onclick="this.form.submit()" th:checked="${task.completed}"/>
-                        <!--input으로 이 form을 submit할 수 있게 해줌-->
-                    </form>
+                    <label class="checkbox-wrapper">
+                        <form th:action="@{/todos/toggle}" method="post" style="display:inline;">
+                            <input type="hidden" name="taskId" th:value="${task.id}"/>
+                            <input type="hidden" name="sort" th:value="${sort}" />
+                            <input type="checkbox" onclick="this.form.submit()" th:checked="${task.completed}"/>
+                            <span class="custom-check"
+                                  th:style="'border:2px solid ' + (${task.color} != null ? ${task.color} : '#ccc') + ';' +
+                                            (${task.completed} and ${task.color} != null ? 'background-color:' + ${task.color} : '')">
+                            </span>
+
+                            <!--input으로 이 form을 submit할 수 있게 해줌-->
+                        </form>
+                    </label>
 
                     <span th:text="${task.description}"> </span>
                 </div>
-                <span th:text="${task.taskDate}"></span>
+                <div th:if="${task.taskStartDate == task.taskEndDate}">
+                    <span th:text="${task.taskStartDate}"></span>
+                </div>
+                <div th:if="${task.taskStartDate != task.taskEndDate}">
+                    <span th:text="${task.taskStartDate}"></span>
+                    <span>~</span>
+                    <span th:text="${task.taskEndDate}"></span>
+                </div>
                 <div class="task-right">
                     <div class="kebab-menu-wrapper">
                         <!-- 케밥 버튼 -->
@@ -72,6 +120,28 @@
             document.querySelectorAll('.kebab-menu').forEach(menu => menu.classList.add('hidden'));
         }
     });
+
+
+    function validateForm() {
+        const color = document.querySelector('input[name="color"]:checked');
+        const startDate = document.querySelector('input[name="taskStartDate"]').value;
+        const endDate = document.querySelector('input[name="taskEndDate"]').value;
+
+        // 🔴 색 선택 안 했을 때
+        if (!color) {
+          alert("색상을 선택해 주세요!");
+          return false;
+        }
+
+        // 🔴 시작일, 종료일이 유효하지 않을 때
+        if (startDate > endDate) {
+          alert("시작일은 종료일보다 빠르거나 같아야 합니다!");
+          return false;
+        }
+
+        // 통과!
+        return true;
+    }
 </script>
 
 </body>
